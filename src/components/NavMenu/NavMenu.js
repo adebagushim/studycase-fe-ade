@@ -7,9 +7,10 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAuth } from '../../redux/appSelector';
 // import styles from './NavMenu.module.scss'
-import { setAuth } from '../../redux/appActions';
+import { setAuth, setSearch } from '../../redux/appActions';
 import { Badge } from 'react-bootstrap';
 import { Cart, Unity } from "react-bootstrap-icons";
+import { useEffect, useState } from 'react';
 
 function ButtonLogout({ action }) {
   return (<Nav.Link onClick={action}>
@@ -17,13 +18,23 @@ function ButtonLogout({ action }) {
   </Nav.Link>)
 }
 
+
 function NavMenu() {
   const auth = useSelector(selectAuth);
   const dispatch = useDispatch();
+  const [ query, setQuery ] = useState('');
   
+  useEffect(() => {
+    console.log(query);
+  },[query])
+  
+  dispatch(setSearch(query));
+    
+
   const logOut = () => {
     dispatch(setAuth(false))
   }
+
   return (
     <Navbar bg="info" expand="lg">
       <Container fluid>
@@ -40,10 +51,6 @@ function NavMenu() {
               <NavDropdown.Item href="#action4">Minuman</NavDropdown.Item>
               <NavDropdown.Item href="#action4">Snack</NavDropdown.Item>
               <NavDropdown.Item href="#action4">Desert</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">
-                Something else here
-              </NavDropdown.Item>
             </NavDropdown>
             { auth && <ButtonLogout action={logOut}/> }
           </Nav>
@@ -52,11 +59,16 @@ function NavMenu() {
               type="search"
               placeholder="Search"
               className="me-2"
-              aria-label="Search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
             />
-            <Button variant="outline-success">Search</Button>
+            <Button 
+              variant="outline-success"
+              >Search
+              
+            </Button>
           </Form>
-          <Nav.Link className="me-2 my-2" href="cart">
+          <Nav.Link className="me-2 my-2" href="/user/cart">
             <Cart className="fs-5 fw-bold" /> 
             <Badge pill bg="secondary">9</Badge>
           </Nav.Link>
@@ -67,4 +79,4 @@ function NavMenu() {
   );
 }
 
-export default NavMenu;
+export default NavMenu

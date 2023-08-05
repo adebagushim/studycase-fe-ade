@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import NavMenu from '../NavMenu/NavMenu';
 import { Outlet } from 'react-router-dom';
+import Footer from '../Footer/Footer';
 
 const Layout = () => {
     return (
@@ -16,6 +17,11 @@ const Layout = () => {
             <Row>
                 <Col>
                     <Outlet/> 
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Footer/> 
                 </Col>
             </Row>
         </Container>

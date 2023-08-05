@@ -5,7 +5,8 @@ const initialState = {
   carts: [],
   auth: localStorage.getItem('auth') ? JSON.parse(localStorage.getItem('auth')) : false,
   user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {},
-  loading: false
+  loading: false,
+  query: ''
 };
 
 
@@ -24,7 +25,10 @@ export const counterSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload
       localStorage.setItem('user', JSON.stringify(action.payload));
-    }
+    },
+    setSearch: (state, action) => {
+      state.query = action.payload
+    },
   },
 });
 

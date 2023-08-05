@@ -6,6 +6,7 @@ import { selectAuth, selectLoading } from '../../redux/appSelector';
 import Spinner from 'react-bootstrap/Spinner';
 import instance from '../../axios';
 import { Navigate } from "react-router-dom";
+import { MDBBtn, MDBCheckbox, MDBContainer, MDBIcon, MDBInput } from 'mdb-react-ui-kit';
 
 function Login() {
   const dispatch = useDispatch();
@@ -17,13 +18,13 @@ function Login() {
     e.preventDefault()
     dispatch(setLoading(true));
     // Make a request for a user with a given ID
-    instance.post('auth/login', { username: 'admin', password: 'admin' })
+    instance.post('auth/login', { username: 'username', password: 'password' })
     .then(function (response) {
         // handle success
         dispatch(setAuth(true));
         dispatch(setUser(response.data.data.user));
-    })
-    .catch(function (error) {
+      })
+      .catch(function (error) {
         // handle error
         console.log(error);
     })
@@ -37,29 +38,32 @@ function Login() {
   }
   return (
     <>
-        { loading ? <Spinner animation="border" role="status">
-                                <span className="visually-hidden">Loading...</span>
-        </Spinner> : null }
-        <Form>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
-            <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-            </Form.Text>
-        </Form.Group>
+      { loading ? <Spinner animation="border" role="status">
+      <span className="visually-hidden">Loading...</span>
+      </Spinner> : null }
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group>
-        <Button variant="primary" type="submit" onClick={submit}>
-            Submit
-        </Button>
-        </Form>
+
+      <MDBContainer className="p-3 my-5 d-flex flex-column w-50 border border-4 border-light">
+
+      <div className="text-center mb-5">
+        <h1>WELCOME</h1>
+      </div>
+
+      <MDBInput wrapperClass='mb-4' label='Username' id='username' type='text'/>
+      <MDBInput wrapperClass='mb-4' label='Password' id='password' type='password'/>
+
+      <div className="d-flex justify-content-between mx-3 mb-4">
+        <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember me' />
+        <a href="!#">Forgot password?</a>
+      </div>
+
+      <MDBBtn className="mb-4" onClick={submit}>Login</MDBBtn>
+
+      <div className="text-center">
+        <p>Not a member? <a href="/register">Register</a></p>
+      </div>
+
+      </MDBContainer>
     </>
   );
 }

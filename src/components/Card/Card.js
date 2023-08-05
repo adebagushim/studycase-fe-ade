@@ -1,16 +1,20 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import db from '../../server';
+import { Container } from 'react-bootstrap';
+import { selectSearch } from '../../redux/appSelector';
+import { useSelector } from 'react-redux';
 
 function Cards() {
-  const [tag, setTag] = useState([]);
+  const [card, setCard] = useState([]);
+  const search = useSelector(selectSearch);
   
   const getData = () => {
     axios
-    .get(`http://localhost:3000/tag`)
+    .get(`${db}/product`)
     .then((res) => {
-        setTag(res.data.data)
+        setCard(res.data.data)
       }) 
     };
     
@@ -18,18 +22,34 @@ function Cards() {
       getData();
     }, []);
 
+    // const filtered = () =>{
+    //     if (
+    //       item.name.toLowerCase().includes(search.toLowerCase())
+    //       ){
+    //           card
+    //       };
+    //   }
+    
   return (
-    <Card className="me-2 my-2" bg="light" style={{ width: '18rem' }}>
-      <Card.Img variant="top" src="holder.js/100px180" />
-      <Card.Body>
-        <Card.Title className="fw-bold">Card Title</Card.Title>
-        <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
-        </Card.Text>
-        <Card.Text class="text-danger">Rp 100.000</Card.Text>
-      </Card.Body>
-    </Card>
+    <Container className="d-flex flex-row">
+      {card.map((x) =>{
+        return (
+          <>
+          <Card className="me-2 my-2" bg="light" style={{ width: '18rem' }}>
+          <Card.Img 
+            src={x.image} 
+            className='img-fluid shadow-2-strong' />
+            {console.log(search)};
+          <Card.Body>
+            <Card.Title className="fw-bold">{x.name}</Card.Title>
+            <Card.Text>{x.description}</Card.Text>
+            <Card.Text class="text-danger">{x.price}</Card.Text>
+          </Card.Body>
+          </Card>
+          </>
+        )
+      })}
+    </Container>
   );
 }
 
