@@ -68,7 +68,7 @@ function NavMenu() {
               
             </Button>
           </Form>
-          <Nav.Link className="me-2 my-2" href="/user/cart">
+          <Nav.Link className="me-2 my-2" href="/cart">
             <Cart className="fs-5 fw-bold" /> 
             <Badge pill bg="secondary">9</Badge>
           </Nav.Link>
