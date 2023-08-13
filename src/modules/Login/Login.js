@@ -7,18 +7,21 @@ import Spinner from 'react-bootstrap/Spinner';
 import instance from '../../axios';
 import { Navigate } from "react-router-dom";
 import { MDBBtn, MDBCheckbox, MDBContainer, MDBIcon, MDBInput } from 'mdb-react-ui-kit';
+import { useState } from 'react';
 
 function Login() {
   const dispatch = useDispatch();
   const loading = useSelector(selectLoading);
   const auth = useSelector(selectAuth);
+  const [ uname, setUname ] = useState('');
+  const [ pword, setPword ] = useState('');
 
   const submit = (e) => {
 
     e.preventDefault()
     dispatch(setLoading(true));
     // Make a request for a user with a given ID
-    instance.post('auth/login', { username: 'username', password: 'password' })
+    instance.post('auth/login', { username: uname, password: pword })
     .then(function (response) {
         // handle success
         dispatch(setAuth(true));
@@ -36,6 +39,7 @@ function Login() {
   if (auth) {
     return <Navigate to="/"/>
   }
+  
   return (
     <>
       { loading ? <Spinner animation="border" role="status">
@@ -49,8 +53,14 @@ function Login() {
         <h1>WELCOME</h1>
       </div>
 
-      <MDBInput wrapperClass='mb-4' label='Username' id='username' type='text'/>
-      <MDBInput wrapperClass='mb-4' label='Password' id='password' type='password'/>
+      <MDBInput wrapperClass='mb-4' label='Username' id='username' type='text'
+        value={uname}
+        onChange={(e) => setUname(e.target.value)}
+      />
+      <MDBInput wrapperClass='mb-4' label='Password' id='password' type='password'
+        value={pword}
+        onChange={(e) => setPword(e.target.value)}
+      />
 
       <div className="d-flex justify-content-between mx-3 mb-4">
         <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember me' />

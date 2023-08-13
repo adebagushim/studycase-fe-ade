@@ -18,8 +18,7 @@ const Home = () => {
                     <Cards/>
                 </Col>
             </Row>
-            <h1>Page Home</h1>
-              status auth {auth ? 'Sudah login' : 'Belum Login'}
+            status auth {auth ? 'Sudah login' : 'Belum Login'}
         </div>
     );
 };

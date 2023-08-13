@@ -7,7 +7,7 @@ import { Button } from 'react-bootstrap';
 
 
 export default function Tags() {
-  const [tag, setTag] = useState([]);
+  const [ tag, setTag ] = useState([]);
   
   const getData = () => {
     axios
@@ -16,22 +16,24 @@ export default function Tags() {
         setTag(res.data.data)
       }) 
     };
-    
+
     useEffect(() => {
       getData();
     }, []);
-  
     
+
+    return (
+      <>
+        {tag.map((x) =>{
         return (
-          <ToggleButtonGroup className="me-2 my-2" type="checkbox">
-            <ToggleButton id="tbg-btn-1">
-              {tag.map((x) =>{
-                return (
-                  <Button key={x._id}>
-                    {x.name}
-                  </Button>
-                )})}
-            </ToggleButton>
+          <ToggleButtonGroup className="mb-2" type="checkbox" defaultValue={x.name}>
+              <ToggleButton id={x.id} value={x.name}>
+                <Button key={x._id}>
+                  {x.name}
+                </Button>
+              </ToggleButton>
           </ToggleButtonGroup>
-        );
+        )})}
+      </>
+    );
 };

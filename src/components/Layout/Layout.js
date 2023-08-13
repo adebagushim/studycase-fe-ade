@@ -8,7 +8,7 @@ import Footer from '../Footer/Footer';
 
 const Layout = () => {
     return (
-        <Container fluid>
+        <div>
             <Row>
                 <Col>
                     <NavMenu/>
@@ -24,7 +24,7 @@ const Layout = () => {
                     <Footer/> 
                 </Col>
             </Row>
-        </Container>
+        </div>
     );
 }
 

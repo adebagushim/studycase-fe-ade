@@ -1,7 +1,28 @@
 import React from 'react';
 import { MDBBtn, MDBContainer, MDBInput } from 'mdb-react-ui-kit';
+import { useState } from 'react';
+import db from '../../server';
+import axios from 'axios';
+import { Navigate } from 'react-router-dom';
 
 function Register() {
+  const [ name, setName ] = useState('');
+  const [ username, setUsername ] = useState('');
+  const [ email, setEmail ] = useState('');
+  const [ password, setPassword ] = useState('');
+
+  const submit = (e) => {
+      e.preventDefault()
+
+      axios.post(`${db}/user`, {
+          name: name,
+          username: username,
+          email: email,
+          password: password
+          });
+      }
+
+
   return (
     <MDBContainer className="p-3 my-5 d-flex flex-column w-50 border border-4 border-light">
 
@@ -9,12 +30,20 @@ function Register() {
         <h1>SIGN UP</h1>
       </div>
 
-      <MDBInput wrapperClass='mb-4' label='Name' id='form2' type='text'/>
-      <MDBInput wrapperClass='mb-4' label='Username' id='form2' type='text'/>
-      <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email'/>
-      <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password'/>
+      <MDBInput wrapperClass='mb-4' label='Name' id='form2' type='text'
+        value={name}
+        onChange={(e) => setName(e.target.value)}/>
+      <MDBInput wrapperClass='mb-4' label='Username' id='form2' type='text'
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}/>
+      <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email'
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}/>
+      <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password'
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}/>
       
-      <MDBBtn className="mb-4">Register</MDBBtn>
+      <MDBBtn className="mb-4" href='/' onClick={submit}>Register</MDBBtn>
 
     </MDBContainer>
 

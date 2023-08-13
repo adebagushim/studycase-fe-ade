@@ -2,19 +2,19 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import db from '../../server';
-import { Container } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { selectSearch } from '../../redux/appSelector';
 import { useSelector } from 'react-redux';
 
 function Cards() {
-  const [card, setCard] = useState([]);
   const search = useSelector(selectSearch);
+  const [ product, setProduct ] = useState([]);
   
   const getData = () => {
     axios
     .get(`${db}/product`)
     .then((res) => {
-        setCard(res.data.data)
+        setProduct(res.data.data)
       }) 
     };
     
@@ -22,34 +22,29 @@ function Cards() {
       getData();
     }, []);
 
-    // const filtered = () =>{
-    //     if (
-    //       item.name.toLowerCase().includes(search.toLowerCase())
-    //       ){
-    //           card
-    //       };
-    //   }
+    const filteredProducts = product.filter(products => 
+      products.name.toLowerCase().includes(search.toLowerCase())
+    );
     
   return (
-    <Container className="d-flex flex-row">
-      {card.map((x) =>{
+    <Row className="d-flex flex-row" style={{ marginLeft: '80px', marginRight: '80px' }}>
+      {filteredProducts.map((x) =>{
         return (
           <>
-          <Card className="me-2 my-2" bg="light" style={{ width: '18rem' }}>
-          <Card.Img 
-            src={x.image} 
-            className='img-fluid shadow-2-strong' />
-            {console.log(search)};
-          <Card.Body>
-            <Card.Title className="fw-bold">{x.name}</Card.Title>
-            <Card.Text>{x.description}</Card.Text>
-            <Card.Text class="text-danger">{x.price}</Card.Text>
-          </Card.Body>
+          <Card className="me-2 my-2" bg="light" style={{ width: '18rem' }}  key={x._id}>
+            <Card.Img 
+              src={x.image} 
+              className='img-fluid shadow-2-strong' />
+            <Card.Body>
+              <Card.Title className="fw-bold">{x.name}</Card.Title>
+              <Card.Text>{x.description}</Card.Text>
+              <Card.Text class="text-danger">{x.price}</Card.Text>
+            </Card.Body>
           </Card>
           </>
         )
       })}
-    </Container>
+    </Row>
   );
 }
 
