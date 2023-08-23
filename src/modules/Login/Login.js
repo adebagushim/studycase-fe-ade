@@ -16,7 +16,7 @@ function Login() {
   const [ uname, setUname ] = useState('');
   const [ pword, setPword ] = useState('');
 
-  const submit = (e) => {
+  const logIn = (e) => {
 
     e.preventDefault()
     dispatch(setLoading(true));
@@ -67,7 +67,7 @@ function Login() {
         <a href="!#">Forgot password?</a>
       </div>
 
-      <MDBBtn className="mb-4" onClick={submit}>Login</MDBBtn>
+      <MDBBtn className="mb-4" onClick={logIn}>Login</MDBBtn>
 
       <div className="text-center">
         <p>Not a member? <a href="/register">Register</a></p>

@@ -6,13 +6,13 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAuth, selectUser } from '../../redux/appSelector';
-// import styles from './NavMenu.module.scss'
-import { setAuth, setSearch } from '../../redux/appActions';
+import { setAuth, setCategoryQ, setSearchQ } from '../../redux/appActions';
 import { Badge } from 'react-bootstrap';
 import { Cart, Unity } from "react-bootstrap-icons";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import db from '../../server';
+import { Navigate } from 'react-router-dom';
 
 
 function NavMenu() {
@@ -22,6 +22,7 @@ function NavMenu() {
   const [ query, setQuery ] = useState('');
   const [ q, setQ ] = useState('');
   const [ category, setCategory ] = useState([]);
+  const [ categories, setCategories ] = useState([]);
   
   const getData = () => {
     axios
@@ -35,15 +36,17 @@ function NavMenu() {
       getData();
     }, []);
   
-  dispatch(setSearch(q));
     
-  const logOut = () => {
-    dispatch(setAuth(false))
-  }
+    const logOut = () => {
+      dispatch(setAuth(false))
+    }
 
-  const search = () => {
-    setQ(query)
-  }
+    const search = () => {
+      setQ(query)
+    }
+    
+    dispatch(setSearchQ(q));
+    dispatch(setCategoryQ(categories));
 
   return (
     <Navbar style={{ width: '100%' }} bg="info" expand="lg">
@@ -59,7 +62,11 @@ function NavMenu() {
               <NavDropdown className="me-2" title="Kategori" id="navbarScrollingDropdown">
                 {category.map((x) =>{
                   return (
-                    <NavDropdown.Item href="#action3">{x.name}</NavDropdown.Item>
+                    <NavDropdown.Item
+                      value={categories}
+                      onClick={() => setCategories(x.name)}
+                      >{x.name}
+                    </NavDropdown.Item>
                   )
                 })}
               </NavDropdown>
@@ -81,6 +88,7 @@ function NavMenu() {
           { auth && 
             <NavDropdown className="fw-bold me-2 my-2" title={`Hello, ${userLogin.name.toUpperCase()}`} id="navbarScrollingDropdown">
               <NavDropdown.Item href="/user">Profile</NavDropdown.Item>
+              <NavDropdown.Item href="/address">Alamat</NavDropdown.Item>
               <NavDropdown.Item href="/cart">Keranjang</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item 
@@ -94,7 +102,6 @@ function NavMenu() {
           { !auth &&
             <>
               <Nav.Link className="fw-bold fs-5 me-2 my-2" href="login">Login</Nav.Link>
-              <Nav.Link className="fw-bold fs-5 me-2 my-2" href="register">Register</Nav.Link>
             </>
           }
         </Navbar.Collapse>

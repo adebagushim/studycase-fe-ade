@@ -4,10 +4,14 @@ import db from '../../server';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
+import { setTagQ } from '../../redux/appActions';
+import { useDispatch } from 'react-redux';
 
 
 export default function Tags() {
   const [ tag, setTag ] = useState([]);
+  const [ tags, setTags ] = useState([]);
+  const dispatch = useDispatch();
   
   const getData = () => {
     axios
@@ -20,20 +24,25 @@ export default function Tags() {
     useEffect(() => {
       getData();
     }, []);
+
+    dispatch(setTagQ(tags));
     
 
     return (
       <>
+          <ToggleButtonGroup className="mb-5 mt-2" type="">
         {tag.map((x) =>{
         return (
-          <ToggleButtonGroup className="mb-2" type="checkbox" defaultValue={x.name}>
-              <ToggleButton id={x.id} value={x.name}>
-                <Button key={x._id}>
-                  {x.name}
+              <ToggleButton>
+                <Button 
+                  key={x._id}
+                  value={tags}
+                  onClick={() => setTags(x.name)}
+                  >{x.name}
                 </Button>
               </ToggleButton>
+              )})}
           </ToggleButtonGroup>
-        )})}
       </>
     );
 };

@@ -4,7 +4,7 @@ import { Facebook, HouseDoorFill, Instagram, TelephoneFill, Tiktok, Twitter } fr
 
 export default function Footer() {
   return (
-    <MDBFooter bgColor='light' className='text-center text-lg-start text-muted fluid'>
+    <MDBFooter bgColor='light' className='text-center text-lg-start text-muted fluid mt-5'>
       <section className='d-flex justify-content-center p-4 border-bottom border-top'>
         <div className='me-3 d-none d-lg-block '>
           <span>Get connected with us on social networks :</span>

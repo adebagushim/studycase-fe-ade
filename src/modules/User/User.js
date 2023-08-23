@@ -10,7 +10,6 @@ import { useSelector } from 'react-redux';
 export default function User() {
   const userLogin = useSelector(selectUser);
   const [ user, setUser ] = useState([]);
-  const [ address, setAddress ] = useState([]);
   
   const getUser = () => {
     axios
@@ -19,34 +18,22 @@ export default function User() {
         setUser(res.data.data)
       }) 
     };
-
-  const getAddress = () => {
-    axios
-    .get(`${db}/delivery-addresses`)
-    .then((res) => {
-        setAddress(res.data.data)
-      }) 
-    };
     
     useEffect(() => {
       getUser();
-      getAddress();
     }, []);
 
     const filteredUser = user.filter(users => 
       users._id == userLogin._id
     );
     
-    const filteredAddress = address.filter(adresses => 
-      adresses.user._id == userLogin._id
-    );
 
   return (
-    <section className="vh-100" style={{ backgroundColor: '#f4f5f7' }}>
+    <section className="vh-100" >
       <MDBContainer className="py-5 h-100 fluid">
           <MDBRow className="justify-content-center align-items-center h-100">
           <MDBCol lg="6" className="mb-4 mb-lg-0">
-            <MDBCard className="mb-3" style={{ borderRadius: '.5rem' }}>
+            <MDBCard className="mb-3" style={{ borderRadius: '.5rem' , backgroundColor: '#f4f5f7' }}>
               <MDBRow className="g-0">
                 <MDBCol md="4" className="gradient-custom text-center"
                   style={{ borderTopLeftRadius: '.5rem', borderBottomLeftRadius: '.5rem' }}>
@@ -72,35 +59,9 @@ export default function User() {
                             <MDBTypography tag="h6">Email</MDBTypography>
                             <MDBCardText className="text-muted">{x.email}</MDBCardText>
                           </MDBCol>
-                          <MDBCol className="mb-3">
-                            <MDBTypography tag="h6" className=''>
-                              Alamat&nbsp;&nbsp;&nbsp;
-                              <Button href='address' className="btn btn-outline-info btn-sm">
-                                Set Alamat
-                              </Button>
-                            </MDBTypography>
-                            {filteredAddress.map((y) =>{
-                              return (
-                                <MDBCardText className="text-muted">{y.alamat}, {y.kelurahan}, {y.kecamatan}, {y.kabupaten}, {y.provinsi}</MDBCardText>
-                              )
-                            })}
-                          </MDBCol>
-                          <MDBCol size="9" className="mb-3">
-                            <MDBTypography className="d-flex" tag="h6">
-                              Keranjang
-                            </MDBTypography>
-                                <Button href='cart' className="btn btn-outline-info btn-sm">
-                                Cek Keranjang
-                              </Button>
-                            <MDBCardText className="text-muted">Test Keranjang</MDBCardText>
-                            </MDBCol>
-                          <MDBCol size="6" className="mb-3">
-                            <MDBTypography tag="h6">Alamat</MDBTypography>
-                            <MDBCardText className="text-muted">Test Alamat</MDBCardText>
-                          </MDBCol>
                         </MDBRow>
-                        <Button className="btn btn-danger">
-                          Log Out
+                        <Button className="btn btn-danger" href='/'>
+                          Back
                         </Button>
                         </>
                       )

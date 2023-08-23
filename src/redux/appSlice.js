@@ -8,7 +8,9 @@ const initialState = {
   address: localStorage.getItem('address') ? JSON.parse(localStorage.getItem('address')) : [],
   user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {},
   loading: false,
-  query: ''
+  searchQ: '',
+  tagQ: '',
+  categoryQ: ''
 };
 
 
@@ -36,8 +38,14 @@ export const counterSlice = createSlice({
     setLoading: (state, action) => {
       state.loading = action.payload
     },
-    setSearch: (state, action) => {
-      state.query = action.payload
+    setSearchQ: (state, action) => {
+      state.searchQ = action.payload
+    },
+    setTagQ: (state, action) => {
+      state.tagQ = action.payload
+    },
+    setCategoryQ: (state, action) => {
+      state.categoryQ = action.payload
     },
   },
 });

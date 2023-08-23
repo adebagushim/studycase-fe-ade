@@ -18,7 +18,6 @@ const Home = () => {
                     <Cards/>
                 </Col>
             </Row>
-            status auth {auth ? 'Sudah login' : 'Belum Login'}
         </div>
     );
 };

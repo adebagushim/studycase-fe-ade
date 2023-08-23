@@ -11,7 +11,7 @@ function Register() {
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
 
-  const submit = (e) => {
+  const reg = (e) => {
       e.preventDefault()
 
       axios.post(`${db}/user`, {
@@ -36,14 +36,14 @@ function Register() {
       <MDBInput wrapperClass='mb-4' label='Username' id='form2' type='text'
         value={username}
         onChange={(e) => setUsername(e.target.value)}/>
-      <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email'
+      <MDBInput wrapperClass='mb-4' label='Email' id='form1' type='email'
         value={email}
         onChange={(e) => setEmail(e.target.value)}/>
       <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password'
         value={password}
         onChange={(e) => setPassword(e.target.value)}/>
       
-      <MDBBtn className="mb-4" href='/' onClick={submit}>Register</MDBBtn>
+      <MDBBtn className="mb-4" href='/' onClick={reg}>Register</MDBBtn>
 
     </MDBContainer>
 

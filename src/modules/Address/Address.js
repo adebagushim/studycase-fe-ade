@@ -1,64 +1,61 @@
-import React from 'react';
-import { MDBBtn, MDBContainer, MDBInput } from 'mdb-react-ui-kit';
-import { useEffect } from 'react';
-import axios from 'axios';
-import { useState } from 'react';
-import { selectUser } from '../../redux/appSelector';
+import Form from 'react-bootstrap/Form';
 import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/appSelector';
+import { useState } from 'react';
+import axios from 'axios';
 import db from '../../server';
+import { useEffect } from 'react';
+import { MDBCard, MDBCardBody, MDBCol, MDBContainer, MDBRow, MDBTypography } from 'mdbreact';
+import { MDBBtn } from 'mdb-react-ui-kit';
 
 function Address() {
-    const [ alamat, setAlamat ] = useState('');
-    const [ kelurahan, setKelurahan ] = useState('');
-    const [ kecamatan, setKecamatan ] = useState('');
-    const [ kabupaten, setKabupaten ] = useState('');
-    const [ provinsi, setProvinsi ] = useState('');
-    const [ detail, setDetail ] = useState('');
     const userLogin = useSelector(selectUser);
-
-    const submit = (e) => {
-        e.preventDefault()
-
-        axios.post(`${db}/delivery-addresses`, {
-            alamat: alamat,
-            kelurahan: kelurahan,
-            kecamatan: kecamatan,
-            kabupaten: kabupaten,
-            provinsi: provinsi,
-            detail: detail,
-            user: userLogin.name
-            });
-            
-        }
+    const [ address, setAddress ] = useState([]);
     
-    return (
-        <MDBContainer className="p-3 my-5 d-flex flex-column w-50 border border-4 border-light">
-            <div className="text-center mb-5">
-                <h1>Address</h1>
-            </div>
+    const getAddress = () => {
+        axios
+        .get(`${db}/delivery-addresses`)
+        .then((res) => {
+            setAddress(res.data.data)
+        }) 
+    };
+        
+    useEffect(() => {
+        getAddress();
+    }, []);
 
-            <MDBInput wrapperClass='mb-4' label='Alamat' id='form1' type='text'
-                value={alamat}
-                onChange={(e) => setAlamat(e.target.value)}/>
-            <MDBInput wrapperClass='mb-4' label='Kelurahan' id='form2' type='text'
-                value={kelurahan}
-                onChange={(e) => setKelurahan(e.target.value)}/>
-            <MDBInput wrapperClass='mb-4' label='Kecamatan' id='form2' type='text'
-                value={kecamatan}
-                onChange={(e) => setKecamatan(e.target.value)}/>
-            <MDBInput wrapperClass='mb-4' label='Kabupaten' id='form2' type='text'
-                value={kabupaten}
-                onChange={(e) => setKabupaten(e.target.value)}/>
-            <MDBInput wrapperClass='mb-4' label='Provinsi' id='form2' type='text'
-                value={provinsi}
-                onChange={(e) => setProvinsi(e.target.value)}/>
-            <MDBInput wrapperClass='mb-4' label='Detail' id='form2' type='text'
-                value={detail}
-                onChange={(e) => setDetail(e.target.value)}/>
-            
-            <MDBBtn className="mb-4" onClick={submit}>Submit</MDBBtn>
-        </MDBContainer>
+    const filteredAddress = address.filter(adresses => 
+        adresses.user._id == userLogin._id
+    );
 
+  return (
+    <MDBContainer className="py-5 h-100">
+        <MDBCard className="mb-3" style={{ borderRadius: '.5rem', backgroundColor: '#f4f5f7' }}>
+            <MDBCardBody className="p-4">
+                <MDBTypography tag="h6" className="text-center">List Alamat Tujuan</MDBTypography>
+                <hr className="mt-0 mb-4" />
+                <MDBRow className="pt-1 d-flex flex-column">
+                    <MDBCol size="6" className="mb-3">
+                    {filteredAddress.map((y) =>{
+                        return (
+                        <Form>
+                        <div className="mb-3">
+                            <Form.Check
+                                type='radio'
+                                value={`${y.alamat} ${y.kelurahan} ${y.kecamatan} ${y.kabupaten} ${y.provinsi}`}
+                                label={`${y.alamat} ${y.kelurahan} ${y.kecamatan} ${y.kabupaten} ${y.provinsi}`}
+                                />
+                        </div>
+                        </Form>
+                        )
+                    })}
+                    <MDBBtn className="mt-3 me-3" href='addaddress' variant="outline-success">Tambah Alamat</MDBBtn>
+                    <MDBBtn className="mt-3" href='/' variant="outline-success">Back</MDBBtn>
+                    </MDBCol>
+                </MDBRow>
+            </MDBCardBody>
+        </MDBCard>
+    </MDBContainer>
   );
 }
 

@@ -5,4 +5,6 @@ export const selectOrder = (state) => state.app.order;
 export const selectAddress = (state) => state.app.address;
 export const selectUser = (state) => state.app.user;
 export const selectLoading = (state) => state.app.loading;
-export const selectSearch = (state) => state.app.query;
+export const selectSearchQ = (state) => state.app.searchQ;
+export const selectTagQ = (state) => state.app.tagQ;
+export const selectCategoryQ = (state) => state.app.categoryQ;
