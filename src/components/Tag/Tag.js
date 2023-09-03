@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 
 export default function Tags() {
   const [ tag, setTag ] = useState([]);
-  const [ tags, setTags ] = useState([]);
+  const [ tags, setTags ] = useState('');
   const dispatch = useDispatch();
   
   const getData = () => {
@@ -19,6 +19,11 @@ export default function Tags() {
     .then((res) => {
         setTag(res.data.data)
       }) 
+      .then(function (response) {
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
     };
 
     useEffect(() => {
@@ -33,9 +38,8 @@ export default function Tags() {
           <ToggleButtonGroup className="mb-5 mt-2" type="">
         {tag.map((x) =>{
         return (
-              <ToggleButton>
+              <ToggleButton key={x._id}>
                 <Button 
-                  key={x._id}
                   value={tags}
                   onClick={() => setTags(x.name)}
                   >{x.name}

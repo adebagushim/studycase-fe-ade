@@ -18,6 +18,12 @@ function Address() {
         .then((res) => {
             setAddress(res.data.data)
         }) 
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
     };
         
     useEffect(() => {
@@ -35,22 +41,18 @@ function Address() {
                 <MDBTypography tag="h6" className="text-center">List Alamat Tujuan</MDBTypography>
                 <hr className="mt-0 mb-4" />
                 <MDBRow className="pt-1 d-flex flex-column">
-                    <MDBCol size="6" className="mb-3">
+                    <MDBCol className="mb-3">
                     {filteredAddress.map((y) =>{
                         return (
-                        <Form>
+                        <Form key={y._id}>
                         <div className="mb-3">
-                            <Form.Check
-                                type='radio'
-                                value={`${y.alamat} ${y.kelurahan} ${y.kecamatan} ${y.kabupaten} ${y.provinsi}`}
-                                label={`${y.alamat} ${y.kelurahan} ${y.kecamatan} ${y.kabupaten} ${y.provinsi}`}
-                                />
+                            {`${y.alamat} ${y.kelurahan} ${y.kecamatan} ${y.kabupaten} ${y.provinsi} ( ${y.detail} )`}
                         </div>
+                        {console.log(filteredAddress.alamat)}
                         </Form>
                         )
                     })}
                     <MDBBtn className="mt-3 me-3" href='addaddress' variant="outline-success">Tambah Alamat</MDBBtn>
-                    <MDBBtn className="mt-3" href='/' variant="outline-success">Back</MDBBtn>
                     </MDBCol>
                 </MDBRow>
             </MDBCardBody>

@@ -10,7 +10,8 @@ const initialState = {
   loading: false,
   searchQ: '',
   tagQ: '',
-  categoryQ: ''
+  categoryQ: '',
+  addToCart: ''
 };
 
 
@@ -46,6 +47,9 @@ export const counterSlice = createSlice({
     },
     setCategoryQ: (state, action) => {
       state.categoryQ = action.payload
+    },
+    setAddToCart: (state, action) => {
+      state.addToCart = action.payload
     },
   },
 });

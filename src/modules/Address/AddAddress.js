@@ -30,10 +30,10 @@ function AddAddress() {
             })
             .then(function (response) {
                 console.log(response);
-              })
-              .catch(function (error) {
+            })
+            .catch(function (error) {
                 console.log(error);
-              });
+            });
         
                 
         }

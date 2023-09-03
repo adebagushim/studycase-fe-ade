@@ -16,7 +16,13 @@ export default function User() {
     .get(`${db}/user`)
     .then((res) => {
         setUser(res.data.data)
-      }) 
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+        console.log(error);
+    }); 
     };
     
     useEffect(() => {
@@ -45,8 +51,8 @@ export default function User() {
                     <hr className="mt-0 mb-4" />
                     {filteredUser.map((x) =>{
                       return (
-                        <>
-                        <MDBRow className="pt-1 d-flex flex-column" key={x._id}>
+                        <div key={x._id}>
+                        <MDBRow className="pt-1 d-flex flex-column">
                           <MDBCol size="6" className="mb-3">
                             <MDBTypography tag="h6">Name</MDBTypography>
                             <MDBCardText className="text-muted">{x.name}</MDBCardText>
@@ -63,7 +69,7 @@ export default function User() {
                         <Button className="btn btn-danger" href='/'>
                           Back
                         </Button>
-                        </>
+                        </div>
                       )
                     })}
                   </MDBCardBody>

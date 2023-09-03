@@ -5,14 +5,13 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectAuth, selectUser } from '../../redux/appSelector';
+import { selectAddToCart, selectAuth, selectUser } from '../../redux/appSelector';
 import { setAuth, setCategoryQ, setSearchQ } from '../../redux/appActions';
 import { Badge } from 'react-bootstrap';
-import { Cart, Unity } from "react-bootstrap-icons";
+import { Unity } from "react-bootstrap-icons";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import db from '../../server';
-import { Navigate } from 'react-router-dom';
 
 
 function NavMenu() {
@@ -22,7 +21,8 @@ function NavMenu() {
   const [ query, setQuery ] = useState('');
   const [ q, setQ ] = useState('');
   const [ category, setCategory ] = useState([]);
-  const [ categories, setCategories ] = useState([]);
+  const [ categories, setCategories ] = useState('');
+  const newCart = useSelector(selectAddToCart);
   
   const getData = () => {
     axios
@@ -30,6 +30,11 @@ function NavMenu() {
     .then((res) => {
         setCategory(res.data.data)
       }) 
+    .then(function (response) {
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
     };
     
     useEffect(() => {
@@ -63,6 +68,7 @@ function NavMenu() {
                 {category.map((x) =>{
                   return (
                     <NavDropdown.Item
+                      key={x._id}
                       value={categories}
                       onClick={() => setCategories(x.name)}
                       >{x.name}
@@ -85,11 +91,17 @@ function NavMenu() {
                 </Button>
               </Form>
             </Nav>
+            { newCart &&
+              <NavDropdown className="fw-normal me-3" title={`Keranjang ${newCart.count}`}>
+                <NavDropdown.Item>{newCart.name}</NavDropdown.Item>
+                <NavDropdown.Item>{newCart.count}</NavDropdown.Item>
+                <NavDropdown.Item>{newCart.totalPrice}</NavDropdown.Item>
+              </NavDropdown>
+            }
           { auth && 
             <NavDropdown className="fw-bold me-2 my-2" title={`Hello, ${userLogin.name.toUpperCase()}`} id="navbarScrollingDropdown">
               <NavDropdown.Item href="/user">Profile</NavDropdown.Item>
               <NavDropdown.Item href="/address">Alamat</NavDropdown.Item>
-              <NavDropdown.Item href="/cart">Keranjang</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item 
                 style={{ fontWeight: 'bold', color: '#fff', backgroundColor: 'red' }}
@@ -97,6 +109,7 @@ function NavMenu() {
                 onClick={logOut}>
                 Log Out
               </NavDropdown.Item>
+              {console.log(newCart)}
             </NavDropdown> 
           }
           { !auth &&
