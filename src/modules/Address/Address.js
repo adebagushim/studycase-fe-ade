@@ -1,5 +1,5 @@
 import Form from 'react-bootstrap/Form';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../redux/appSelector';
 import { useState } from 'react';
 import axios from 'axios';
@@ -7,16 +7,18 @@ import db from '../../server';
 import { useEffect } from 'react';
 import { MDBCard, MDBCardBody, MDBCol, MDBContainer, MDBRow, MDBTypography } from 'mdbreact';
 import { MDBBtn } from 'mdb-react-ui-kit';
+import { setAddress } from '../../redux/appActions';
 
 function Address() {
     const userLogin = useSelector(selectUser);
-    const [ address, setAddress ] = useState([]);
+    const [ allAddress, setAllAddress ] = useState([]);
+    const dispatch = useDispatch();
     
     const getAddress = () => {
         axios
         .get(`${db}/delivery-addresses`)
         .then((res) => {
-            setAddress(res.data.data)
+            setAllAddress(res.data.data)
         }) 
         .then(function (response) {
             console.log(response);
@@ -30,9 +32,27 @@ function Address() {
         getAddress();
     }, []);
 
-    const filteredAddress = address.filter(adresses => 
+    const filteredAddress = allAddress.filter(adresses => 
         adresses.user._id == userLogin._id
     );
+
+    const edit = (y) => {
+        dispatch(setAddress(y))
+    }
+
+    const hapus = (y) => {
+        axios
+        .delete(`${db}/delivery-addresses/${y._id}`)
+        .then((res) => {
+            setAllAddress(res.data.data)
+        }) 
+        .then(function (response) {
+            console.log('Hapus Alamat Berhasil');
+        })
+        .catch(function (error) {
+            console.log('Error Hapus Alamat Error');
+        });
+    }
 
   return (
     <MDBContainer className="py-5 h-100">
@@ -44,15 +64,33 @@ function Address() {
                     <MDBCol className="mb-3">
                     {filteredAddress.map((y) =>{
                         return (
-                        <Form key={y._id}>
-                        <div className="mb-3">
-                            {`${y.alamat} ${y.kelurahan} ${y.kecamatan} ${y.kabupaten} ${y.provinsi} ( ${y.detail} )`}
-                        </div>
-                        {console.log(filteredAddress.alamat)}
+                        <Form key={y._id} className="mb-3 d-flex justify-content-between">
+                            <div className="mb-3">
+                                {`${y.alamat} ${y.kelurahan} ${y.kecamatan} ${y.kabupaten} ${y.provinsi} ( ${y.detail} )`}
+                            </div>
+                            <div>
+                                <MDBBtn 
+                                    className="mb-3 me-3 btn btn-success" 
+                                    href='editaddress' 
+                                    onClick={() => edit(y)}>
+                                    Edit
+                                </MDBBtn>
+                                <MDBBtn 
+                                    className="mb-3 btn btn-danger" 
+                                    href='/' 
+                                    onClick={() => hapus(y)}>
+                                    Hapus
+                                </MDBBtn>
+                            </div>
                         </Form>
                         )
                     })}
-                    <MDBBtn className="mt-3 me-3" href='addaddress' variant="outline-success">Tambah Alamat</MDBBtn>
+                    <MDBBtn 
+                        className="mt-3 me-3" 
+                        href='addaddress' 
+                        variant="outline-success">
+                        Tambah Alamat
+                    </MDBBtn>
                     </MDBCol>
                 </MDBRow>
             </MDBCardBody>

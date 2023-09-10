@@ -7,6 +7,7 @@ import User from './modules/User/User';
 import Cart from './modules/Carts/Cart';
 import AddAddress from './modules/Address/AddAddress';
 import Address from './modules/Address/Address';
+import EditAddress from './modules/Address/EditAddress';
 
 
 const routes = () => {
@@ -42,6 +43,10 @@ const routes = () => {
                 {
                     path: 'addaddress',
                     element: <AddAddress/>,
+                },
+                {
+                    path: 'editaddress',
+                    element: <EditAddress/>,
                 },
             ]
         }

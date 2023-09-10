@@ -93,9 +93,13 @@ function NavMenu() {
             </Nav>
             { newCart &&
               <NavDropdown className="fw-normal me-3" title={`Keranjang ${newCart.count}`}>
-                <NavDropdown.Item>{newCart.name}</NavDropdown.Item>
-                <NavDropdown.Item>{newCart.count}</NavDropdown.Item>
-                <NavDropdown.Item>{newCart.totalPrice}</NavDropdown.Item>
+                <NavDropdown.Item>{newCart.name} -{newCart.count}-  Rp. {newCart.totalPrice}</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item 
+                  style={{ fontWeight: 'bold', color: '#fff', backgroundColor: 'green' }}
+                  href="/cart">
+                  Cek Out
+                </NavDropdown.Item>
               </NavDropdown>
             }
           { auth && 

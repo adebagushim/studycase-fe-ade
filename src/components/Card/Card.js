@@ -72,7 +72,7 @@ function Cards() {
     <Row className="d-flex flex-row" style={{ marginLeft: '80px', marginRight: '80px' }}>
       {product.map((x) =>{
         return (
-          <Card className="me-1 my-2" bg="light" style={{ width: '18rem' }}  key={x._id}>
+          <Card className="me-1 my-2" bg="light" style={{ width: '18rem' }} key={x._id}>
             <Card.Img src={x.image} className='shadow-2-strong' style={{ width: '260px', height: '180px' }}/>
             <Card.Body>
               <Card.Title className="fw-bold">{x.name}</Card.Title>
